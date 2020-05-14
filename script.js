@@ -3,12 +3,17 @@ let context = canvas.getContext("2d") // renderiza o desenho que vai aparecer no
 let box = 32;
 let snake = []
 
+
 snake[0] = {
     x: 8 * box,
     y: 8 * box
 }
 
 let direction = "right";
+let food = {
+    x: Math.floor(Math.random() * 15 + 1) * box, /* floor tira a parte decimal */
+    y: Math.floor(Math.random() * 15 + 1) * box,
+}
 
 
 function criarBG(){
@@ -23,10 +28,14 @@ function criarSnake(){
     }
 }
 
+function dropFood(){
+    context.fillStyle = "red"
+    context.fillRect(food.x , food.y, box , box)
+}
+
 
 // Controle - eventos
 document.addEventListener('keydown', update)
-
 function update(event){
     if(event.keyCode == 37 && direction != "right") direction = "left";
     
@@ -42,7 +51,7 @@ function update(event){
 
 
 function IniciarJogo(){
-    // Limite
+    // Limite para the snake não sumir
     if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
     if(snake[0].x < 0 && direction == "left") snake[0].x = 15 * box;
     if(snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
@@ -50,6 +59,8 @@ function IniciarJogo(){
 
     criarBG();
     criarSnake();
+    dropFood();
+   
 
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
